@@ -1,0 +1,115 @@
+\documentclass[11pt]{article}
+
+
+% --- Packages ---
+\usepackage{amsmath, amsthm, amsfonts, amssymb, hyperref, soul, latexsym, stmaryrd, booktabs} % fonts and characters
+\usepackage{enumitem, ytableau, comment, graphicx, makecell, appendix, titling, scrextend, float, multirow, placeins, subcaption} % utilities
+\usepackage{tikz, tikz-cd, tikzsymbols, pgfplots} % plots crap
+\pgfplotsset{compat=1.18}
+\usepackage{blkarray} % random math 
+\usepackage{pstricks,pst-node,pst-tree} % networks
+\usepackage{verbatim} % write code
+\newlength\myverbindent % indent code
+\setlength\myverbindent{0.5in} % change this to change indentation
+\makeatletter
+\def\verbatim@processline{%
+  \hspace{\myverbindent}\the\verbatim@line\par}
+
+
+% --- Matplotlib ---
+% we import figures as pgfplots, which means its exported as tex to matplotlib
+% to do this, we need certain commands in the premable to compile the way it shoud
+\def\mathdefault#1{#1}
+\everymath=\expandafter{\the\everymath\displaystyle}
+\makeatletter\@ifpackageloaded{underscore}{}{\usepackage[strings]{underscore}}\makeatother
+
+
+% --- Formatting ---
+\usepackage{fullpage} % margins
+\usepackage{setspace}
+\doublespacing
+
+\numberwithin{equation}{section} % number equations with section number
+\numberwithin{figure}{section} % number figure with section number
+\numberwithin{table}{section} % number table with section number
+
+
+% --- Math Crap ---
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\lagr}{\mathcal{L}}
+\newcommand{\e}{\varepsilon}
+\renewcommand{\sup}{\text{sup}}
+\renewcommand{\inf}{\text{inf}}
+\renewcommand{\d}{\delta}
+\renewcommand{\Re}{\text{Re}}
+\renewcommand{\Im}{\text{Im}}
+\newcommand{\Arg}{\text{Arg}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+
+
+% --- Bibliography ---
+\usepackage[style=numeric, backend=biber, ibidtracker=false]{biblatex} % packages
+\bibliography{sources} % .bib file
+
+
+% --- Title ---
+\title{A Finite Element Approach to Reaction-Diffusion Systems}
+\author{Gavin Engelstad\thanks{Replication code available at \url{https://github.com/GavinEngelstad/Reaction-Diffusion-FEM}.} \\ \href{mailto:gengelst@macalester.edu}{gengelst@macalester.edu}.}
+\date{Fall 2024}
+
+
+%% --- Document ---
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+    TBD
+\end{abstract}
+
+
+%% --- Paper Sections ---
+% --- Introduction ---
+\section{Introduction} \label{sec:intro}
+\input{sections/01_intro}
+
+% --- The Finite Element Method ---
+\section{The Finite Element Method} \label{sec:fem}
+\input{sections/02_fem}
+
+
+% --- Simple Solutions ---
+\section{Solving a System} \label{sec:sols}
+\input{sections/03_sols}
+
+
+% --- Complex Domains ---
+\section{More Complex Domains} \label{sec:doms}
+% maze
+% 3d surface
+
+
+
+%% --- References ---
+\newpage
+\printbibliography
+\FloatBarrier
+
+
+%$ --- Appendix ---
+\newpage
+\appendix
+
+% --- Dtiffness and Dapening Matricies ---
+\section{The Stiffness and Damping Matrices} \label{app:mats}
+\input{sections/A1_mats}
+
+
+
+\end{document}
