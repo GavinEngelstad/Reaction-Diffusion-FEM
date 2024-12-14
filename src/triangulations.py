@@ -164,14 +164,14 @@ def tri_sphere(r, refinement_level):
 
 def tri_torus(r, R, N):
     ## setup 
-    Nu = N * R
-    Nv = N * r
+    Nu = int(np.ceil(N * R * np.pi * 2))
+    Nv = int(np.ceil(N * r * np.pi * 2))
 
     ## paramterization
     u = np.linspace(0, 2 * np.pi, Nu + 1)[:-1]
     v = np.linspace(0, 2 * np.pi, Nv + 1)[:-1]
     u, v = np.meshgrid(u, v)
-    u += np.tile([0, np.pi / (Nu + 1)], (N + 1) // 2)[:N, None]
+    u += np.tile([0, np.pi / (Nu + 1)], (Nv + 1) // 2)[:Nv, None]
     u = u.ravel()
     v = v.ravel()
 

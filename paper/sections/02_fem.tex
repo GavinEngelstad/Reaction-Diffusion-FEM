@@ -70,7 +70,7 @@ Similarly, we can approximate $r_n$ as
 \[
     \hat{r}_n (t, x, y) = \sum_j \psi(x, y) r_n \left(\{u_{m, j} (t)\}_{m = 1}^N\right) \approx r(\{u_{m} (x, y, t)\}_{m = 1}^N).
 \]
-This approximation requires the solution for $u_n$ and $r_n$ to be adequately smooth across space and the triangulation to have a fine enough mesh. I analyze these assumptions in Section TBD by solving systems with increasingly fine discretizations to get closer to the exact answer. Using these approximations and $v = \psi_i$ in the weak form gets
+This approximation requires the solution for $u_n$ and $r_n$ to be adequately smooth across space and the triangulation to have a fine enough mesh. I analyze these assumptions in Section \ref{subsec:err} by solving systems with increasingly fine discretizations to get closer to the exact answer. Using these approximations and $v = \psi_i$ in the weak form gets
 \[
     \sum_j \partial_t u_{n, j} \int_\Omega \psi_i \psi_j dA = -\gamma_n \sum_j u_{n, j} \int_\Omega \nabla \psi_i \cdot \nabla \psi_j dA + \sum_j r_n \left(\{u_{m, j} (t)\}_{m = 1}^N\right) \int_\Omega \psi_i \psi_j dA
 \]
