@@ -4,7 +4,7 @@ The general form of a reaction-diffusion system is
 \[
     \partial_t \mathbf{u} = \Gamma \nabla^2 \mathbf{u} + \mathbf{R} (\mathbf{u})
 \]
-where $\mathbf{u}(t, x, y)$ is a vector function describing the concentration of the reactants, $\Gamma$ is a diagonal matrix of diffusion coefficients, and $\mathbf{R}(\mathbf{u})$ is a potential nonlinear function describing the reactions between the reactants \parencite{martin1992nonlinear}. I solve the system on the domain $\Omega$ which I assume the PDE has Neumann boundary conditions with derivative 0 for simplicity. The method could be extended to Neumann conditions with nonzero gradient across the boundary or Dirichlet conditions, but this is beyond the scope of this paper. Assuming the systems contains $N$ total reactions, each equation in the system is
+where $\mathbf{u}(t, x, y)$ is a vector function describing the concentration of the reactants, $\Gamma$ is a diagonal matrix of diffusion coefficients, and $\mathbf{R}(\mathbf{u})$ is a potential nonlinear function describing the reactions between the reactants \parencite{martin1992nonlinear}. I solve the system on the domain $\Omega$ and assume the PDE has Neumann boundary conditions with derivative 0 for simplicity. The method could be extended to Neumann conditions with nonzero gradient across the boundary or Dirichlet conditions, but this is beyond the scope of this paper. Assuming the systems contains $N$ total reactions, each equation in the system is
 \[
     \partial_t u_n = \gamma_n \nabla^2 u_n + r_n\left(\{u_m\}_{m = 1}^{N}\right), \quad n \in \{1, 2, \dots, N\}.
 \]
@@ -46,9 +46,9 @@ Therefore, the weak form is
     \label{fig:tris}
 \end{figure}
 
-To discretize the spacial derivative, I triangulate $\Omega$. Figure \ref{fig:tris} gives examples of what potential triangulations look like for a variety of domains. Panel \ref{subfig:2dtris} shows this discretization for 2D domains including a square, disk, and maze-like structure and panel \ref{subfig:3dtris} shows this discretization along the surface of 3D objects, including a sphere and a torus.
+To discretize the spacial derivative, I triangulate $\Omega$. Figure \ref{fig:tris} gives examples of what potential triangulations look like for a variety of domains. Panel \ref{subfig:2dtris} shows this discretization for 2D domains including a square, disk, and maze-like structure and Panel \ref{subfig:3dtris} shows this discretization along the surface of 3D objects, including a sphere and a torus.
 
-For each vertex $v_i$ in the triangulation, define a function $\psi_i$ such that
+For each vertex $v_i$ in the triangulation, I define a function $\psi_i$ such that
 \begin{align*}
     \psi_i (v_i) &= 1 \\
     \psi_i (v_j) &= 0, \quad j \neq i
@@ -62,13 +62,13 @@ and $\nabla \psi_i$ is constant along a triangle $T$. An example of $\psi_i$ for
     \label{fig:psi}
 \end{figure}
 
-To discretize $u_n$, let $u_{n, j} (t)$ approximate $u(t, v_i)$. Then, we have
+To discretize $u_n$, let $u_{n, i} (t)$ approximate $u(t, v_i)$. Then, we have
 \[
-    \hat{u}_n (t, x, y) = \sum_j \psi(x, y) u_{n, j} (t) \approx u(t, x, y).
+    \hat{u}_n (t, x, y) = \sum_i \psi(x, y) u_{n, i} (t) \approx u(t, x, y).
 \]
 Similarly, we can approximate $r_n$ as
 \[
-    \hat{r}_n (t, x, y) = \sum_j \psi(x, y) r_n \left(\{u_{m, j} (t)\}_{m = 1}^N\right) \approx r(\{u_{m} (x, y, t)\}_{m = 1}^N).
+    \hat{r}_n (t, x, y) = \sum_i \psi(x, y) r_n \left(\{u_{m, i} (t)\}_{m = 1}^N\right) \approx r(\{u_{m} (x, y, t)\}_{m = 1}^N).
 \]
 This approximation requires the solution for $u_n$ and $r_n$ to be adequately smooth across space and the triangulation to have a fine enough mesh. I analyze these assumptions in Section \ref{subsec:err} by solving systems with increasingly fine discretizations to get closer to the exact answer. Using these approximations and $v = \psi_i$ in the weak form gets
 \[
@@ -100,4 +100,4 @@ Then, defining $\mathbf{u}_n^t$ as the vector with entries $u_{n, j}^t$, the equ
 \]
 which allows me to solve for the solution at $t$ given a solution at time $t - \Delta t$. The function $r_n$ is vectorized and, because $\mathbf{D} + \Delta t \gamma_n \mathbf{S}$ is sparse, symmetric, and positive-definite, I use the conjugate gradient method to solve for $\mathbf{u}_n^t$ \parencite{nazareth2009conjugate}. Together, this allows me to quickly solve for each time step.
 
-Therefore, to solve the system, I start with some initial condition $\mathbf{u}_n^0$ for each $n$. In the sections that follow, this initial condition is chosen to be random noise except when noted otherwise. Then, I solve the linearized version of the PDE for each $n$ to iterate to the next time step. Repeating this process to some final $T$ allows me to efficiently and accurately solve the reaction-diffusion PDE on any triangulated domain.
+Therefore, to solve the system, I start with some initial condition $\mathbf{u}_n^0$ for each $n$. In the sections that follow, this initial condition is chosen to be random noise, although any initial condition could be used. Then, I solve the linearized version of the PDE for each $n$ to iterate to the next time step. Repeating this process to some final $T$ allows me to efficiently and accurately solve the reaction-diffusion PDE on any triangulated domain.

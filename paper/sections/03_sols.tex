@@ -1,6 +1,6 @@
 \subsection{A Baseline System}
 
-For this paper, I solve the system in \autocites{othmer2009intersection}{jeong2017numerical}. By replacing the reaction function, the method can be extended to any sufficiently smooth reaction diffusion system. This includes Turing's initial version \parencites{turing1990chemical}{de2020leopard} and other activator-inhibitor equations \parencites{landge2020pattern}{meinhardt2000pattern} which it has been tested against. The system I solve is given by
+For this paper, I solve the system in \autocites{othmer2009intersection}{jeong2017numerical}. By replacing the reaction function, the method can be extended to any sufficiently smooth reaction-diffusion system. This includes Turing's initial version \parencites{turing1990chemical}{de2020leopard} and other activator-inhibitor equations \parencites{landge2020pattern}{meinhardt2000pattern} which it has been tested against. The system I solve is given by
 \begin{align*}
     \frac{\partial u}{\partial t} = \gamma_u \nabla^2 u + k_1 \left(v - \frac{uv}{1 + v^2}\right) \\
     \frac{\partial v}{\partial t} = \gamma_v \nabla^2 v + k_2 - v - \frac{4 u v}{1 + v^2}.
@@ -13,7 +13,7 @@ Like \autocite{jeong2017numerical}, I fix $D_u = 1$ and $k_2 = 11$ in all simula
 
 \begin{figure}[t!]
     \centering
-    \caption{Solutions to the reaction diffusion system}
+    \caption{Solutions to the reaction-diffusion system}
 
     \begin{subfigure}{\textwidth}
         \centering
@@ -30,7 +30,7 @@ Like \autocite{jeong2017numerical}, I fix $D_u = 1$ and $k_2 = 11$ in all simula
     \label{fig:sol-ts}
 \end{figure}
 
-Figure \ref{fig:sol-ts} plots the solution to the reaction diffusion system at different time steps on a square and circular domain. The left panel plots the initial condition, the middle panel plots an intermediate step during the reaction, and the right panel plots the system at steady state. I set the initial condition to random noise. At $t = 10$, the reaction starts to progress, and we see patterns and `hotspots' emerge. The patterns that exist, however, lack clear definition. In the steady state, we see well-defined lines that form clear Turing patterns.
+Figure \ref{fig:sol-ts} plots the solution to the reaction-diffusion system at different time steps on a square and circular domain. The left panel plots the initial condition, the middle panel plots an intermediate step during the reaction, and the right panel plots the system at steady state. I set the initial condition to random noise. At $t = 10$, the reaction starts to progress, and we see patterns and `hotspots' emerge. The patterns that exist, however, lack clear definition. In the steady state, we see well-defined lines that form clear Turing patterns.
 
 At each time step, the system makes similar shapes on the circular and square domains. The intermediate step patterns both have similarly sized hotspots, and the Turing patterns that develop have a similar structure being made of curved-lines with similar width. I explore this further in Section \ref{sec:doms} with more complicated domains and arrive at the same result.
 
@@ -46,7 +46,7 @@ The chosen parameterization has significant effects on the shape of the Turing p
     \label{fig:sq-pars}
 \end{figure}
 
-Figure \ref{fig:sq-pars} shows how parameter choice affects the Turing patterns in $\gamma_v - k_1$ space on a square domain. With higher diffusion, the patterns are less defined and have more fuzziness along the boundary and are wider. With low diffusion, spots emerge since the diffusion is not strong enough to merge the disjoint elements together. Increasing $k_1$ merges the spots together again forming stripes, but does not have the same effect on the width and definition of the patterns. With high $\gamma_v$ and $k_1$ the patterns become dominated by high-concentrations of $u$ (yellow) instead of low concentrations (purple).
+Figure \ref{fig:sq-pars} shows how parameter choice affects the Turing patterns in $\gamma_v - k_1$ space on a square domain. With higher diffusion, the patterns are less defined having more fuzziness along the boundary and are wider. With low $\gamma_v$, spots emerge since the diffusion is not strong enough to merge the disjoint elements together. Increasing $k_1$ merges the spots together again forming stripes, but does not have the same effect on the width and definition of the patterns. With high $\gamma_v$ and $k_1$ the patterns become dominated by high-concentrations of $u$ (yellow) instead of low concentrations (purple).
 
 \begin{figure}[t!]
     \centering
@@ -60,7 +60,7 @@ The parameterization has the same effect on alternate domains. Figure \ref{fig:c
 
 \subsection{Error Analysis} \label{subsec:err}
 
-By discretizing the grid, I am introducing potential numerical error into the solution. I analyze this by comparing solutions on less granular triangulations to the solution on a very fine triangulation. Specifically, denoting $\hat{u}^{N}$ the finite element approximation for $u$ on a grid with an average of $N$ vertices along a 1 unit path across edges in the triangulation, I calculate
+By discretizing the grid, I am introducing potential numerical error into the solution. I analyze this by comparing solutions on less granular triangulations to the solution on a very fine triangulation. Denoting $\hat{u}^{N}$ the finite element approximation for $u$ on a grid with an average of $N$ vertices along a 1 unit path across edges in the triangulation, I calculate
 \[
     \epsilon_N = \int_\Omega \left| \hat{u}^N (\overline{t}, x, y) - \hat{u}^{\overline{N}} (\overline{t}, x, y) \right| dA
 \]
@@ -87,6 +87,6 @@ for some large $\overline{t}$ so that the system has reached the steady state an
     \label{fig:err}
 \end{figure}
 
-Figure \ref{fig:err} gives the results of this analysis. Panel \ref{subfig:res-by-N} shows the resulting steady states using different $N$. Qualitatively, the Turing patterns that develop look very similar across $N$. With low $N$, the lines do form different connections, especially in the top right corner where there is an island when $N = 16$ and $N = 50$ but not when $N = 5$. The patterns in the $N = 16$ and $N = 50$ case are visually identical.
+Figure \ref{fig:err} gives the results of this analysis. Panel \ref{subfig:res-by-N} shows the resulting steady states using different $N$. Qualitatively, the Turing patterns that develop look very similar across $N$. With low $N$, the lines do form different connections, especially in the top right corner where the lines form together differently when $N = 16$ and $N = 50$ versus when $N = 5$. The patterns in the $N = 16$ and $N = 50$ case are visually identical.
 
-Panel \ref{subfig:err-over-N} shows the total error for different values of $N$ and the comparison between the $N = 16$ and $N = 50$ case. In general, a larger value of $N$ reduces error, although there is diminishing returns since the magnitude of the increase is lower at higher $N$. For the $N = 16$ case, total error is low across the whole domain. The error follows wave-like patterns through the domain. Comparing the locations of the error with the patterns in Panel \ref{subfig:res-by-N}, the points with the highest error are located on the boundaries of the Turing patterns. This is consistent with the fact that the FEM approximation is worse in areas where the function is less smooth.
+Panel \ref{subfig:err-over-N} shows the total error for different values of $N$ and the comparison between the $N = 16$ and $N = 50$ case. In general, a larger value of $N$ reduces error, although there is diminishing returns since the magnitude of the error decrease is lower at higher $N$. For the $N = 16$ case, total error is low across the whole domain. The error follows wave-like patterns through the domain. Comparing the locations of the error with the patterns in Panel \ref{subfig:res-by-N}, the points with the highest error are located on the boundaries of the Turing patterns. This is consistent with the fact that the FEM approximation is worse in areas where the function is less smooth.
