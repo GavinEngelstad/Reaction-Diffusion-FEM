@@ -135,7 +135,7 @@ def build_matricies(pts, tris):
 
 
 ## --- Solve FEM ---
-def solve_fem(r, gamma, t_max, dt, u0, damp_mat, stiff_mat):
+def solve_fem(r, gamma, t_max, dt, u0, damp_mat, stiff_mat, return_all=False):
     '''
     r: Reaction function. Takes n_pts by N matrix of u values and returns n_pts
     by N matrix of reactions
@@ -145,24 +145,33 @@ def solve_fem(r, gamma, t_max, dt, u0, damp_mat, stiff_mat):
     u0: Inital condition
     damp_mat: Damping matrix
     stiff_mat: Stiffness matrix
+    return_all: Return the progression at each time step. Uses a lot of memory
     '''
     ## setup 
     n_pts, N = u0.shape
     num_iter = int(np.ceil(t_max / dt) + 1)
-    u = np.empty((num_iter, n_pts, N))
-    u[0] = u0
+    u = 1 * u0
+    if return_all:
+        u_all = np.empty((num_iter, n_pts, N))
+        u_all[0] = u0
 
     ## loop, explicit euler
     lhs = [damp_mat + dt * g * stiff_mat for g in gamma]  # lhs is constant the whole time
     for i in range(1, num_iter):
         # setup problem
-        ri = r(u[i - 1])  # reaction
-        rhs = damp_mat @ (u[i - 1] + dt * ri)
+        ri = r(u)  # reaction
+        rhs = damp_mat @ (u + dt * ri)
 
         # solve problem
         for n in range(N):
-            u[i, :, n] = sparse.linalg.cg(lhs[n], rhs[:, n], x0=u[i - 1, :, n])[0]
+            u[:, n] = sparse.linalg.cg(lhs[n], rhs[:, n], x0=u[:, n])[0]
         
+        # store it
+        if return_all:
+            u_all[i] = u
+        
+    if return_all:
+        return u_all
     return u
 
 
