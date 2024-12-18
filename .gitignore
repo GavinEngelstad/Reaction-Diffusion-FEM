@@ -471,3 +471,6 @@ TSWLatexianTemp*
 ## vscode
 */.DS_Store
 */.vscode
+paper/figures/.DS_Store
+.DS_Store
+
